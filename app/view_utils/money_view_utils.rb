@@ -35,7 +35,7 @@ module MoneyViewUtils
       delimiter: I18n.t("number.currency.format.delimiter", locale: locale) || ",",
       format: I18n.t("number.currency.format.format", locale: locale) || "%u%n",
       digits: currency.exponent.to_i,
-      symbol: currency.symbol
+      symbol: "TND"
     }
   end
 end
