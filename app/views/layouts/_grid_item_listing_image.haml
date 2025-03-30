@@ -20,7 +20,7 @@
       - if listing.price
         %span.fluid-thumbnail-grid-image-price
           = MoneyViewUtils.to_humanized(listing.price)
-          - price_unit = price_quantity_slash_unit(listing)
+          - price_unit = "TND"
         - if !price_unit.blank?
           - price_text = " TND"
           %span.fluid-thumbnail-grid-image-quantity{:title => price_text}
