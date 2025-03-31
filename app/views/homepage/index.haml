@@ -3,24 +3,32 @@
   
   :javascript
     document.addEventListener("DOMContentLoaded", function() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const selectedCategory = urlParams.get("category"); 
-      if (selectedCategory) {
-          filterListings(selectedCategory);
-      }
-    });
-    
-    function filterListings(category) {
-      const listings = document.querySelectorAll(".listing-item"); // Adjust selector as needed
-      listings.forEach(listing => {
-          const listingCategory = listing.getAttribute("data-category"); // Assuming category is stored as data-category
-          if (listingCategory === category) {
-              listing.style.display = "block";
-          } else {
-              listing.style.display = "none";
-          }
-      });
+    console.log("DOM fully loaded and parsed");
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedCategory = urlParams.get("category"); 
+    console.log("Selected category from URL:", selectedCategory);
+    if (selectedCategory) {
+        filterListings(selectedCategory);
     }
+});
+
+function filterListings(category) {
+    console.log("Filtering listings for category:", category);
+    const listings = document.querySelectorAll(".listing-item"); // Adjust selector as needed
+    console.log("Found", listings.length, "listings to filter");
+    listings.forEach(listing => {
+        const listingCategory = listing.getAttribute("data-category"); // Assuming category is stored as data-category
+        console.log("Listing category:", listingCategory, "comparing with:", category);
+        if (listingCategory === category) {
+            console.log("Showing listing:", listing);
+            listing.style.display = "block";
+        } else {
+            console.log("Hiding listing:", listing);
+            listing.style.display = "none";
+        }
+    });
+    console.log("Filtering complete");
+}
 
 - content_for :coverfade_class do
   = "without-text"
