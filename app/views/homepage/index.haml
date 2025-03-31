@@ -1,5 +1,26 @@
 - content_for :javascript do
   initialize_homepage();
+  
+  :javascript
+    document.addEventListener("DOMContentLoaded", function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const selectedCategory = urlParams.get("category"); 
+      if (selectedCategory) {
+          filterListings(selectedCategory);
+      }
+    });
+    
+    function filterListings(category) {
+      const listings = document.querySelectorAll(".listing-item"); // Adjust selector as needed
+      listings.forEach(listing => {
+          const listingCategory = listing.getAttribute("data-category"); // Assuming category is stored as data-category
+          if (listingCategory === category) {
+              listing.style.display = "block";
+          } else {
+              listing.style.display = "none";
+          }
+      });
+    }
 
 - content_for :coverfade_class do
   = "without-text"

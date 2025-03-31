@@ -163,10 +163,7 @@ class HomepageController < ApplicationController
   end
 
   def find_listings(params:, current_page:, listings_per_page:, filter_params:, includes:, location_search_in_use:, keyword_search_in_use:, relevant_search_fields:)
-
     search = {
-      # Add listing_id
-      categories: filter_params[:categories],
       listing_shape_ids: Array(filter_params[:listing_shape]),
       price_cents: filter_range(params[:price_min], params[:price_max]),
       keywords: keyword_search_in_use ? params[:q] : nil,
@@ -196,22 +193,22 @@ class HomepageController < ApplicationController
         Result::Success.new(res[:body])
       }
     else
-      ListingIndexService::API::Api.listings.search(
-        community_id: @current_community.id,
-        search: search,
-        includes: includes,
-        engine: FeatureFlagHelper.search_engine,
-        raise_errors: raise_errors
-        ).and_then { |res|
-        Result::Success.new(
-          ListingIndexViewUtils.to_struct(
-            result: res,
-            includes: includes,
-            page: search[:page],
-            per_page: search[:per_page]
-          )
+    ListingIndexService::API::Api.listings.search(
+      community_id: @current_community.id,
+      search: search,
+      includes: includes,
+      engine: FeatureFlagHelper.search_engine,
+      raise_errors: raise_errors
+    ).and_then { |res|
+      Result::Success.new(
+        ListingIndexViewUtils.to_struct(
+          result: res,
+          includes: includes,
+          page: search[:page],
+          per_page: search[:per_page]
         )
-      }
+      )
+    }
     end
   end
 
