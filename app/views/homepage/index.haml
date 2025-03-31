@@ -1,34 +1,32 @@
 - content_for :javascript do
   initialize_homepage();
-  
-  :javascript
-    function filterListings(category) {
-      console.log("Filtering listings for category:", category);
-      const listings = document.querySelectorAll(".listing-item");
-      console.log("Found", listings.length, "listings to filter");
-      listings.forEach(listing => {
-        const listingCategory = listing.getAttribute("data-category");
-        console.log("Listing category:", listingCategory, "comparing with:", category);
-        if (listingCategory === category) {
-          console.log("Showing listing:", listing);
-          listing.style.display = "block";
-        } else {
-          console.log("Hiding listing:", listing);
-          listing.style.display = "none";
-        }
-      });
-      console.log("Filtering complete");
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-      console.log("DOM fully loaded and parsed");
-      const urlParams = new URLSearchParams(window.location.search);
-      const selectedCategory = urlParams.get("category"); 
-      console.log("Selected category from URL:", selectedCategory);
-      if (selectedCategory) {
-        filterListings(selectedCategory);
+  function filterListings(category) {
+    console.log("Filtering listings for category:", category);
+    const listings = document.querySelectorAll(".listing-item");
+    console.log("Found", listings.length, "listings to filter");
+    listings.forEach(listing => {
+      const listingCategory = listing.getAttribute("data-category");
+      console.log("Listing category:", listingCategory, "comparing with:", category);
+      if (listingCategory === category) {
+        console.log("Showing listing:", listing);
+        listing.style.display = "block";
+      } else {
+        console.log("Hiding listing:", listing);
+        listing.style.display = "none";
       }
     });
+    console.log("Filtering complete");
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    console.log("DOM fully loaded and parsed");
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedCategory = urlParams.get("category"); 
+    console.log("Selected category from URL:", selectedCategory);
+    if (selectedCategory) {
+      filterListings(selectedCategory);
+    }
+  });
 
 - content_for :coverfade_class do
   = "without-text"
