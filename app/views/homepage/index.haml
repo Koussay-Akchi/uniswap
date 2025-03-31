@@ -5,41 +5,15 @@
   = "without-text"
 
 - content_for :extra_javascript do
+  - # maps.google can't be loaded twice
   - maps_key = MarketplaceHelper.google_maps_key(@current_community.id)
   - key_param = maps_key ? "&key=#{maps_key}" : ""
+  - # Topbar adds its own maps script, otherwise add it if location search enabled or map is visible
   - needs_maps = !FeatureFlagHelper.feature_enabled?(:topbar_v1) && (main_search != :keyword || @view_type.eql?("map"))
   - if(needs_maps)
     = javascript_include_tag "//maps.googleapis.com/maps/api/js?libraries=places#{key_param}"
   - if(@view_type.eql?("map"))
     = javascript_include_tag "markerclusterer.js"
-  :javascript
-    function filterListings(category) {
-      console.log("Filtering listings for category:", category);
-      const listings = document.querySelectorAll(".listing-item");
-      console.log("Found", listings.length, "listings to filter");
-      listings.forEach(listing => {
-        const listingCategory = listing.getAttribute("data-category");
-        console.log("Listing category:", listingCategory, "comparing with:", category);
-        if (listingCategory === category) {
-          console.log("Showing listing:", listing);
-          listing.style.display = "block";
-        } else {
-          console.log("Hiding listing:", listing);
-          listing.style.display = "none";
-        }
-      });
-      console.log("Filtering complete");
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-      console.log("DOM fully loaded and parsed");
-      const urlParams = new URLSearchParams(window.location.search);
-      const selectedCategory = urlParams.get("category");
-      console.log("Selected category from URL:", selectedCategory);
-      if (selectedCategory) {
-        filterListings(selectedCategory);
-      }
-    });
 
 - content_for :title_header do
   - is_homepage = params[:controller] == "homepage" && params[:action] == "index"
@@ -112,7 +86,7 @@
                   - else
                     = t("homepage.filters.all_listing_types")
 
-              = icon_tag("dropdown", ["icon-dropdown"])
+                = icon_tag("dropdown", ["icon-dropdown"])
 
             .home-toolbar-share-type-menu.toggle-menu.hidden
               = link_to t("homepage.filters.all_listing_types"), search_path(search_params.merge({transaction_type: "all"}))
